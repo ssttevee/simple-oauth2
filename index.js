@@ -1,23 +1,28 @@
-'use strict';
+import coreModule from './lib/core';
+import authCodeModule from './lib/client/auth-code';
+import passwordModule from './lib/client/password';
+import accessTokenModule from './lib/access-token';
+import clientCredentialsModule from './lib/client/client';
 
-const authCodeModule = require('./lib/client/auth-code');
-const passwordModule = require('./lib/client/password');
-const accessTokenModule = require('./lib/access-token');
-const clientCredentialsModule = require('./lib/client/client');
+export default class {
+  constructor(config) {
+    this.__config = config;
+    this.__core = coreModule(config);
+  }
 
-module.exports = {
+  authorizationCode() {
+    return authCodeModule(this.__core, this.__config);
+  }
 
-  /**
-   * Creates a new simple-oauth2 client with the provided configuration
-   * @param  {Object}  opts Module options as defined in schema
-   * @returns {Object} The simple-oauth2 client
-   */
-  create(options = {}) {
-    return {
-      accessToken: accessTokenModule(options),
-      ownerPassword: passwordModule(options),
-      authorizationCode: authCodeModule(options),
-      clientCredentials: clientCredentialsModule(options),
-    };
-  },
-};
+  ownerPassword() {
+    return passwordModule(this.__core, this.__config);
+  }
+
+  accessToken() {
+    return accessTokenModule(this.__core, this.__config);
+  }
+
+  clientCredentials() {
+    return clientCredentialsModule(this.__core, this.__config);
+  }
+}
