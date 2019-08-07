@@ -6,7 +6,13 @@ import clientCredentialsModule from './lib/client/client';
 
 export default class {
   constructor(config) {
-    this.__config = config;
+    this.__config = config || {};
+    this.__config.client = this.__config.client || {};
+    this.__config.client.idParamName = this.__config.client.idParamName || 'client_id';
+    this.__config.options = this.__config.options || {};
+    this.__config.options.authorizationMethod = this.__config.options.authorizationMethod || 'header';
+    this.__config.options.bodyFormat = this.__config.options.bodyFormat || 'form';
+    
     this.__core = coreModule(config);
   }
 
